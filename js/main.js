@@ -56,7 +56,7 @@ class Player {
         }
     }
     
-    hit (deck) {
+    hit () {
         this.hand.push(shuffledDeck.pop());
     }
 }
@@ -88,6 +88,7 @@ function getMainDeck() {
 
 
 function getShuffledDeck() {
+    // we want to use a temp deck so we don't alter our maindeck ever
     let tempDeck = mainDeck;
     let shuffledDeck = [];
     // when length = 0 this will evaluate false
