@@ -12,6 +12,7 @@ const PHASES = ['betting', 'player action', 'dealer action']
 // the pot holding the bet money
 let player;
 let dealer;
+let mainDeck;
 let shuffledDeck;
 let pot;
 /*----Cached Elements----*/
@@ -27,11 +28,79 @@ let pot;
 // deal cards button
 
 /*-------Functions-------*/
-in
+init ();
+
+function init() {
+    // set the pot to 0
+    resetPot();
+    // get the main deck that we will copy and reshuffle
+    mainDeck = getMainDeck();
+    // copy and shuffle the deck
+    shuffledDeck = getShuffledDeck();
+}
+
+class Player {
+    constructor() {
+        this.hand = [];
+        this.bank = 0;
+        this.handValue = 0;
+        this.blackJack = false;
+        this.bust = false;
+    }
+
+    dealCard () {
+        this.hand.push(shuffledDeck.pop());
+        this.hand.push(shuffledDeck.pop());
+        if (this.handValue === 21) {
+            this.blackJack = true;
+        }
+    }
+    
+    hit (deck) {
+        this.hand.push(shuffledDeck.pop());
+    }
+}
+
+function resetPot() {
+    pot = 0;
+}
+
+function getMainDeck() {
+    // array to hold the card objects
+    const deck = [];
+    // loop through each suit
+    SUITS.forEach(function(suit) {
+        // loop through each rank to get all 52 cards
+        RANKS.forEach(function(rank) {
+            let card = {
+                // face value for the css 
+                face: `${suit}${rank}`,
+                // value for the hand value, if rank is a number use that, else give value of 10
+                // or 11 if Ace
+                value: Number(rank) || (rank === 'A' ? 11 : 10)
+            };
+            // push the card to the deck
+            deck.push(card);
+        })
+    })
+    return deck;
+}
+
+
+function getShuffledDeck() {
+    let tempDeck = mainDeck;
+    let shuffledDeck = [];
+    // when length = 0 this will evaluate false
+    while (tempDeck.length) {
+        // get a random idx between (0, length-1)
+        let idx = Math.floor(Math.random() * tempDeck.length);
+        // splice returns an array so we want the first (only) element
+        shuffledDeck.push(tempDeck.splice(idx, 1)[0]);
+    }
+    return shuffledDeck;
+}
 // check the players bank balance and make sure its not 0
-// when the player goes to submit a bet make sure it is not larger than the bank value
 // subtract the bet amount from the players bank and add it to the pot
-// shuffle the deck
 // deal cards
 // handle standing or hitting
 // evaluate player hand
