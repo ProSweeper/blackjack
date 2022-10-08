@@ -1,0 +1,64 @@
+main deck will be a constant with a shuffled deck that is copied from it for gameplay purposes
+    -to make our main deck there needs to be an array of suits and an array of ranks
+    -use a function to make the original deck from the two arrays
+        -loop through the suits array
+            -loop through the values array
+                -push an object with 2 key/values to the main deck:
+                    -'face' made from the suit and rank (for mapping to the css classes)
+                    -'value' for determining the worth of the hand
+    -make the shuffled deck using a function (use the west class to rotate 90 degrees)
+        -first copy the original deck into a variable so it remains unaltered
+        -make a new variable to hold the shuffled deck
+        -loop through the temp deck, while the temp deck has a length more than zero:
+            -grab a random index between 0 and the length of the temp deck - 1
+            -splice that index from the temp deck and push it to the shuffled deck
+        -return the shuffled deck from the function
+
+Phases will be an array of nums corresponding to a phase  
+    -betting
+        -activate chip buttons for bet 
+        -hide the deal button
+        -display bet amount after setting it to 0
+        -change h1 to say place bet 
+        -get the player to submit a valid bet then deal the cards
+    -hit/stand 
+        -hide bet amount
+        -display pot amount and chips in the center
+        -have h1 one display hit or stand
+        -the player will hit/stand 
+            -if hit then continue to hit until a stand or bust
+            -if bust then change turn to 
+    -dealers turn 
+        -hide the hit and stand buttons
+        -have the dealer hit until 17 hand value (unless soft 17)
+            -likey use the set time out so that the player can follow along
+    -determine winner
+        -pay the player if they won and display the deal button
+
+have user click deposit button to initiate game
+    -initialize the player as an object containing:
+        - a bank with $500
+        - an empty array for the hand
+        - a value that equates to the hand value
+        - a method to bet money
+            -make sure the bet is valid
+            -subtract money from bank and add it to the pot 
+    -initialize the dealer as an object containing:
+        - an empty array for the hand
+        - a value for the hand value
+        - a boolean for if the dealer hand is showing
+        - method for determing the dealer behaviour on its turn
+    -initialize the phase to betting (1)
+
+
+
+rendering function for the cards
+    -has 2 paramaters, the deck and the container
+    -access the container that will house the cards and clear its innerHTML
+    -create a variable that will hold a string that will become the new innerHTML
+    -loop through the cards we want to render
+        -add the html element and class we want the card to be to the variable
+            -the first class will be card for the css library
+            -the second class will be the face property in the card object
+    -change the containers innerHTML to be that of our string variable
+        -it will contain all the cards in the hand (each an individual div)
