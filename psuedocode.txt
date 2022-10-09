@@ -48,6 +48,14 @@ have user click deposit button to initiate game
         - a value for the hand value
         - a boolean for if the dealer hand is showing
         - method for determing the dealer behaviour on its turn
+            - get the value of the hand 
+            - is it 17 or more? \
+                -if so stand
+                -if not hit 
+                    -did dealer bust?
+                        -if so player win
+                        -if not is hand value 17 or more
+                            -loop
     -initialize the phase to betting (1)
 
 
