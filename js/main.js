@@ -2,8 +2,8 @@
 // The deck should be an array of objects, this way it has access to array methods
 const SUITS = ['s', 'c', 'd', 'h'];
 const RANKS = ['02', '03', '04', '05', '06', '07', '08', '09', '10', 'J', 'Q', 'K', 'A'];
-const PHASES = ['betting', 'player action', 'dealer action']
-// card objects should hold value(int), suit(string), showing(boolean) values 
+const PHASES = {betting: false, playerAction: false, dealerAction: false}
+// card objects should hold value(int), face(string) values 
 
 
 /*----state variables----*/
@@ -15,13 +15,22 @@ let dealer;
 let mainDeck;
 let shuffledDeck;
 let pot;
+let playerWin;
+let bet;
 /*----Cached Elements----*/
 // chip buttons
 // hit and stand buttons
 // message element
-
+let messageEl = document.getElementById('message');
+let betAmountEl = document.getElementById('bet-amount');
+let potAmountEl = document.getElementById('pot');
+let hitbuttonEl = document.getElementById('hit');
+let standbuttonEl = document.getElementById('stand');
+let dealbuttonEl = document.getElementById('deal');
+let dealerHandEl = document.getElementById('dealer-hand');
+let playerHandEl = document.getElementById('player-hand');
 /*----Event Listeners----*/
-// click our chips to incriment the bet
+// click our chips to incriment the bet (delegated event)
 // manually enter bet in a text bar
 // make bet button
 // hit and stand buttons
@@ -37,9 +46,14 @@ function init() {
     mainDeck = getMainDeck();
     // copy and shuffle the deck
     shuffledDeck = getShuffledDeck();
+    player = new Player();
+    dealer = new Dealer();
+    PHASES.betting = true;
+
+    render();
 }
 
-class Player {
+class Player  {
     constructor() {
         this.hand = [];
         this.bank = 0;
@@ -50,7 +64,7 @@ class Player {
     }
 
     dealCards () {
-        // reset the bust and blackjack since this is the 2 cards dealt
+        // reset the bust and blackjack since this is the first 2 cards dealt
         this.blackJack = false;
         this.bust = false;
         this.hand.push(shuffledDeck.pop());
@@ -64,6 +78,8 @@ class Player {
     }
 
     evalHand () {
+        // reset the acecount in case any are lingering from a previous eval
+        this.aceCount = 0;
         // cards look like {face: 'c04', value: 4}
         this.hand.forEach((card) => {
             this.handValue += card.value;
@@ -86,11 +102,26 @@ class Player {
 }
 
 class Dealer extends Player {
-    
+    // use settimeouts for automated dealer turn so player can register what is going on  
 }
+
+function handlBet() {
+    
+    dealer.dealCards();
+    player.dealCards();
+    PHASES.betting = false;
+    PHASES.playerAction = true;
+    render();
+}
+
+
 
 function resetPot() {
     pot = 0;
+}
+
+function payPlayer() {
+    player.bank += pot;
 }
 
 function getMainDeck() {
@@ -142,3 +173,17 @@ function getShuffledDeck() {
     // render message
     // render chips
     // render buttons
+function render() {
+    renderHands();
+    renderMessage();
+    renderPlayerChips();
+    renderPotChips();
+    renderControls();
+}
+
+function renderControls() {
+    // set phases to booleans, if phase === false controls for that phase will be hidden
+    // update the pertanent booleans with the functions that would end the current phase
+
+    // 
+}
