@@ -2,7 +2,12 @@
 // The deck should be an array of objects, this way it has access to array methods
 const SUITS = ['s', 'c', 'd', 'h'];
 const RANKS = ['02', '03', '04', '05', '06', '07', '08', '09', '10', 'J', 'Q', 'K', 'A'];
-const PHASES = {betting: false, playerAction: false, dealerAction: false}
+const PHASES = {
+    betting: false, 
+    playerAction: false,
+    dealerAction: false
+};
+const CHIPS = ['5', '10', '25', '50'];
 // card objects should hold value(int), face(string) values 
 
 
@@ -21,38 +26,31 @@ let bet;
 // chip buttons
 // hit and stand buttons
 // message element
-let messageEl = document.getElementById('message');
-let betAmountEl = document.getElementById('bet-amount');
-let potAmountEl = document.getElementById('pot');
-let hitbuttonEl = document.getElementById('hit');
-let standbuttonEl = document.getElementById('stand');
-let dealbuttonEl = document.getElementById('deal');
-let dealerHandEl = document.getElementById('dealer-hand');
-let playerHandEl = document.getElementById('player-hand');
+const messageEl = document.getElementById('message');
+const betAmountEl = document.getElementById('bet-amount');
+const potEl = document.getElementById('pot');
+const potAmountEl = document.getElementById('pot-amount');
+const hitbuttonEl = document.getElementById('hit');
+const standbuttonEl = document.getElementById('stand');
+const dealbuttonEl = document.getElementById('deal');
+const dealerHandEl = document.getElementById('dealer-hand');
+const playerHandEl = document.getElementById('player-hand');
+const betEl = document.getElementById('bet');
+const playerChipsEl = document.getElementById('chips');
+const bankAmountEl = document.getElementById('bank-amount');
+
 /*----Event Listeners----*/
 // click our chips to incriment the bet (delegated event)
 // manually enter bet in a text bar
 // make bet button
 // hit and stand buttons
 // deal cards button
+dealbuttonEl.addEventListener('click', handleBet);
+playerChipsEl.addEventListener('click', handleRaise);
+hitbuttonEl.addEventListener('click', handleHit);
+standbuttonEl.addEventListener('click', handleStand);
 
 /*-------Functions-------*/
-init ();
-
-function init() {
-    // set the pot to 0
-    resetPot();
-    // get the main deck that we will copy and reshuffle
-    mainDeck = getMainDeck();
-    // copy and shuffle the deck
-    shuffledDeck = getShuffledDeck();
-    player = new Player();
-    dealer = new Dealer();
-    PHASES.betting = true;
-
-    render();
-}
-
 class Player  {
     constructor() {
         this.hand = [];
@@ -78,6 +76,8 @@ class Player  {
     }
 
     evalHand () {
+        // reset handvalue from last eval
+        this.handValue = 0;
         // reset the acecount in case any are lingering from a previous eval
         this.aceCount = 0;
         // cards look like {face: 'c04', value: 4}
@@ -102,19 +102,151 @@ class Player  {
 }
 
 class Dealer extends Player {
-    // use settimeouts for automated dealer turn so player can register what is going on  
+    // use settimeouts for automated dealer turn so player can register what is going on
+    constructor() {
+        super();
+        this.handShowing = false;
+    }
+    turn() {
+        while (this.handValue < 18 && !this.bust) {
+            this.hit();
+            setTimeout(function() {return}, 2000);
+            render();
+        }
+        if (dealer.bust){
+            messageEl.innerText = "Dealer Bust! You Win!";
+            setTimeout(handlePlayerWin, 3000);
+            return;
+        }
+        findWinner();
+    } 
 }
 
-function handlBet() {
-    
+init ();
+
+function init() {
+    // set the pot to 0
+    resetPot();
+    // get the main deck that we will copy and reshuffle
+    mainDeck = getMainDeck();
+    // copy and shuffle the deck
+    shuffledDeck = getShuffledDeck();
+    player = new Player();
+    dealer = new Dealer();
+    PHASES.betting = true;
+    bet = 0;
+    player.bank = 500;
+    render();
+}
+
+function handleBet() {
+    if (!bet) return;
+    if (bet > player.bank) {
+        messageEl.innerText = "Please Enter a Valid Bet"
+        setTimeout(resetGame, 1500);
+        return;
+    }
     dealer.dealCards();
     player.dealCards();
     PHASES.betting = false;
     PHASES.playerAction = true;
+    pot = bet;
+    player.bank -= bet;
+    setTimeout(checkBlackJack, 1000);
     render();
 }
 
+function handleRaise(evt) {
+    if (evt.target.tagName !== 'BUTTON' || !PHASES.betting) return;
+    bet += parseInt(evt.target.id);
+    betAmountEl.innerText = bet;
+    render()
+}
 
+function handleHit() {
+    player.hit()
+    if (player.bust) {
+        handlePlayerBust();
+    }
+    render()
+}
+
+function handlePlayerBust() {
+    PHASES.playerAction = false;
+    messageEl.innerText = "BUST!! Please Play again"
+    setTimeout(resetGame, 3000);
+}
+
+function handleStand() {
+    PHASES.playerAction = false;
+    PHASES.dealerAction = true;
+    dealer.turn();
+    render();
+}
+
+function handlePlayerWin() {
+    if (!dealer.bust) {
+        messageEl.innerText = 'You Win!';
+        player.bank += pot * 2;
+        setTimeout(resetGame, 3000);
+        return;
+    }
+    player.bank += pot * 2;
+    resetGame();
+}
+
+function handleDealerWin() {
+    messageEl.innerText = "Dealer Wins, Better Luck Next Time";
+    setTimeout(resetGame, 3000);
+}
+
+function checkBlackJack() {
+    if (player.blackJack && !dealer.blackJack) {
+        player.bank += pot * 2.5;
+        messageEl.innerText = "BlackJack!!";
+        setTimeout(resetGame, 4000);
+    } else if (dealer.blackJack && !player.blackJack) {
+        // dealer blackjack
+        messageEl.innerText = "Dealer BlackJack, Better Luck Next Time";
+        setTimeout(resetGame, 4000);
+
+    } else if (dealer.blackJack && player.blackJack) {
+        // both blackjack
+        handleDraw();
+    }
+}
+
+function findWinner() {
+    if (player.handValue === dealer.handValue) {
+        handleDraw();
+        return;
+    }
+    player.handValue > dealer.handValue ? handlePlayerWin() : handleDealerWin();
+}
+
+function handleDraw() {
+    player.bank += pot;
+    messageEl.innerText = 'Push!';
+    setTimeout(resetGame, 4000);
+} 
+
+function resetGame() {
+    player.hand = [];
+    dealer.hand = [];
+    player.handValue = 0;
+    dealer.handValue = 0;
+    player.bust = false;
+    dealer.bust = false;
+    player.blackJack = false;
+    dealer.blackJack = false;
+    resetPot();
+    bet = 0;
+    // just make sure everything is reset in phases
+    PHASES.betting = true;
+    PHASES.playerAction = false;
+    PHASES.dealerAction = false;
+    render();
+}
 
 function resetPot() {
     pot = 0;
@@ -159,31 +291,65 @@ function getShuffledDeck() {
     }
     return shuffledDeck;
 }
-// check the players bank balance and make sure its not 0
-// subtract the bet amount from the players bank and add it to the pot
-// deal cards
-// handle standing or hitting
-// evaluate player hand
-// dealers turn
-// compare hands
-// handle the phases
-// render
-    // render hands
-    // render board
-    // render message
-    // render chips
-    // render buttons
+
 function render() {
     renderHands();
     renderMessage();
     renderPlayerChips();
     renderPotChips();
     renderControls();
+    renderInfo();
 }
 
 function renderControls() {
     // set phases to booleans, if phase === false controls for that phase will be hidden
     // update the pertanent booleans with the functions that would end the current phase
-
+    for (let phase in PHASES) {
+        if (PHASES[phase]) {
+            // if the phase is true then get all els that relate to that phase and make them visble
+            let buttons = [...document.querySelectorAll(`.${phase}`)];
+            buttons.forEach(button => (button.style.visibility = 'visible'))
+        } else {
+            let buttons = [...document.querySelectorAll(`.${phase}`)];
+            buttons.forEach(button => (button.style.visibility = 'hidden'))
+        }
+    }
     // 
+}
+
+function renderHands () {
+    playerHandEl.innerText = 'Player Hand: ';
+    player.hand.forEach(card => {
+        playerHandEl.innerText += `${card.value} `;
+        playerHandEl.innerText += `_`;
+    });
+    dealerHandEl.innerText = 'Dealer Hand: ';
+    dealer.hand.forEach(card => {
+        dealerHandEl.innerText += `${card.value} `;
+        dealerHandEl.innerText += `_`;
+    });
+}
+
+function renderMessage () {
+    if (PHASES.betting) {
+        messageEl.innerText = 'Please Enter a Bet and Click Deal';
+    } else if (PHASES.playerAction) {
+        messageEl.innerText = 'Hit or Stand';
+    }
+}
+
+function renderPlayerChips () {
+    return;
+}
+
+function renderPotChips () {
+    return;
+}
+
+function renderInfo() {
+    bankAmountEl.innerText = player.bank;
+    betEl.style.visibility = PHASES.betting ? 'visible' : 'hidden';
+    potEl.style.visibility = PHASES.betting ? 'hidden' : 'visible';
+    betAmountEl.innerText = bet;
+    potAmountEl.innerText = pot;
 }
