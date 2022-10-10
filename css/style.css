@@ -1,0 +1,77 @@
+* {
+    box-sizing: border-box;
+    /* color: white; */
+}
+
+body {
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+}
+
+main {
+    /* margin: 0 auto; */
+    height: 100vmin;
+    /* background-image: url('../images/background.jpg'); */
+    display: grid;
+    /* grid-template-columns: 20% 20% 20% 20% 20%; */
+    grid-template-rows: repeat(3, 1fr);
+    row-gap: 5px black;
+}
+
+#top-board {
+    grid-row: 1/2;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+}
+
+#dealer-hand {
+    height: 80%;
+}
+#middle-board {
+    grid-row: 2/3;
+    display: grid;
+    grid-template-columns: 2fr 1fr 2fr;
+    align-content: center;
+    justify-content: center;
+}
+
+#pot {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#pot-chips {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#deck-and-actions {
+    display: flex;
+    justify-content: center;
+    align-items:center;
+}
+
+.buttons {
+    align-items:flex-start
+}
+
+#bottom-board {
+    grid-row: 3/4;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+}
+
+#left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#player-hand {
+
+}
