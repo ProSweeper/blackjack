@@ -54,7 +54,8 @@ main deck will be a constant with a shuffled deck that is copied from it for gam
             -splice that index from the temp deck and push it to the shuffled deck
         -return the shuffled deck from the function
 
-Phases will be an array of nums corresponding to a phase  
+Phases will be booleans so they can act as gaurds for events as well as have the render function 
+check if they should be showing or not  
     -betting
         -activate chip buttons for bet 
         -hide the deal button
@@ -110,3 +111,34 @@ rendering function for the cards
             -the second class will be the face property in the card object
     -change the containers innerHTML to be that of our string variable
         -it will contain all the cards in the hand (each an individual div)
+
+Rendering funciton for controls
+    -bank amount will always be visible
+    -if betting phase is true show the bet amount. hide the hit, stand, deal,
+    elements
+    - if player action phase is true show the hit, stand elements. Hide the bet
+    amount, deal elements
+    -if it is the dealer action phase no controls should be shown 
+    -if it is the dealing phase only the deal cards should be shown
+
+Rendering function for information
+    -bank amount should always be visible
+    -If it is the first bet phase the get bet message should display and hide pot amount
+    -If it is hit/stand phase the hit/stand message should display as well as pot amount
+    -during dealer phase messgage to be determined show pot amount
+    -evaluate and then show winner as well as the get bet message 
+
+render hands function 
+    -should just return if hands are empty(during bet phase) 
+    -show all player cards during hit/stand and dealer phases\
+    -hide second dealer card during hit/stand phase then show all dealer 
+    cards during the dealers turn
+
+render player chips function
+    -want to show chips that player has access to for betting
+        -if player has less than $50 for example then the $50 chip wont show
+    - be showing at all times
+
+render pot chips function 
+    -want to show chips that player has bet in lowest total amount 
+        -if pot is $55 only show a $50 and $5 chip for example
