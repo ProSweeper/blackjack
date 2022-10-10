@@ -3,11 +3,15 @@ TODOs:
 
 Deal initial hand 
     -event listener for deal button
+        -deal the cards after clicking
+        -end the betting phase
+        -start the hit/stand phase
     -method to deal cards
+        
 
 Hit and stand functionality
     -event listener for hit
-    -add to hand 
+        -add to hand 
     -evaluate for bust
         -if bust then go to deal phase again (bank amount permitting)
     -event listener for stand 
