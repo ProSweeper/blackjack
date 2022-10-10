@@ -1,3 +1,39 @@
+TODOs:
+✅ Generate deck and cards
+
+Deal initial hand 
+    -event listener for deal button
+    -method to deal cards
+
+Hit and stand functionality
+    -event listener for hit
+    -add to hand 
+    -evaluate for bust
+        -if bust then go to deal phase again (bank amount permitting)
+    -event listener for stand 
+        if stand then move to dealers turn 
+Dealer turn functionality
+    -eval hand 
+        -if blackjack and no player blackjack then player loses
+        -show message and new deal button 
+            -check player bank and see if they can still play 
+    -delay 1s before, may enhance experience
+    -below 17 must hit
+    -set each loop of dealer turn to have a delay after so player can register game
+
+Compare hands 
+    -if dealer bust player just wins
+    -if player hand higher they win else dealer wins 
+        -pay player if they win 
+            -1.5x for player blackjack
+    -show message 
+        -congradulate if won 
+        -say sorry if they lost
+        -push if they tie 
+    -show event listener for new deal 
+    -if player out of money then offer prompt to deposit money (reinit the game)
+
+
 main deck will be a constant with a shuffled deck that is copied from it for gameplay purposes
     -to make our main deck there needs to be an array of suits and an array of ranks
     -use a function to make the original deck from the two arrays
