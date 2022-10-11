@@ -29,6 +29,7 @@ let bet;
 const messageEl = document.getElementById('message');
 const betAmountEl = document.getElementById('bet-amount');
 const potEl = document.getElementById('pot');
+const potChipsEl = document.getElementById('pot-chips');
 const potAmountEl = document.getElementById('pot-amount');
 const hitbuttonEl = document.getElementById('hit');
 const standbuttonEl = document.getElementById('stand');
@@ -49,7 +50,7 @@ dealbuttonEl.addEventListener('click', handleBet);
 playerChipsEl.addEventListener('click', handleRaise);
 hitbuttonEl.addEventListener('click', handleHit);
 standbuttonEl.addEventListener('click', handleStand);
-
+potChipsEl.addEventListener('click', handleWithdraw);
 /*-------Functions-------*/
 class Player  {
     constructor() {
@@ -172,10 +173,28 @@ function handleBet() {
 }
 
 function handleRaise(evt) {
-    if (evt.target.tagName !== 'BUTTON' || !PHASES.betting) return;
-    bet += parseInt(evt.target.id);
-    betAmountEl.innerText = bet;
+    // if its not the betting phase return
+    if (!PHASES.betting) return;
+    // in case the player misses and clicks the housing div
+    if (evt.target.id === 'chips') return;
+    // if the event target is a span get the id of the parent div and pass it into bet
+    // if the event target is the chip div then just get its id
+    bet += evt.target.tagName === 'SPAN' ? parseInt(evt.target.parentElement.id) : parseInt(evt.target.id);
+    if (bet > player.bank) bet = player.bank;
+
     render()
+}
+
+function handleWithdraw(evt) {
+     // if its not the betting phase return
+     if (!PHASES.betting) return;
+     // in case the player misses and clicks the housing div
+     if (evt.target.id === 'pot-chips') return;
+     // if the event target is a span get the id of the parent div and pass it into bet
+     // if the event target is the chip div then just get its id
+     bet += evt.target.tagName === 'SPAN' ? parseInt(evt.target.parentElement.id) : parseInt(evt.target.id);
+     if (bet < 0) bet = 0;
+     render()
 }
 
 function handleHit() {
