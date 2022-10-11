@@ -1,6 +1,7 @@
 * {
     box-sizing: border-box;
     /* color: white; */
+    font-family: 'Chakra Petch', sans-serif;
 }
 
 body {
@@ -96,3 +97,4 @@ main {
 .chip:hover, .chip > span:hover {
     cursor: pointer;
 }
+
