@@ -19,42 +19,42 @@
             <div id="dealer-hand">
                 
             </div>
-            <h1 id="message">Hit or Stand</h1>
+            <h1 class="info" id="message">Hit or Stand</h1>
         </div>
         <div id="middle-board">
-            <div id="pot">Pot: $<span id="pot-amount"></span></div>
+            <div class="info"id="pot">Pot: $<span id="pot-amount"></span></div>
             <div id="pot-chips">
-                <div class="chip" id="-5"><span>$5</span></div>
-                <div class="chip" id="-10"><span>$10</span></div>
-                <div class="chip" id="-25"><span>$25</span></div>
-                <div class="chip" id="-50"><span>$50</span></div>
+                <div class="chip five" id="-5"><span>$5</span></div>
+                <div class="chip ten" id="-10"><span>$10</span></div>
+                <div class="chip twofive" id="-25"><span>$25</span></div>
+                <div class="chip fifty" id="-50"><span>$50</span></div>
             </div>
             <div id="deck-and-actions">
                 <!-- have classes match with phases for render function -->
                 <div class="card large west back"></div>
                 <div class="buttons">
-                    <button class="playerAction" id="hit">Hit</button>
-                    <button class="betting" id="deal">Deal</button>
-                    <button class="playerAction" id="stand">Stand</button>
+                    <button class="action playerAction" id="hit">Hit</button>
+                    <button class="action betting" id="deal">Deal</button>
+                    <button class="action playerAction" id="stand">Stand</button>
                 </div>
             </div>
         </div>
         <div id="bottom-board">
             <div id="left">
                 <div id="chips">
-                    <div class="chip" id="5"><span>$5</span></div>
-                    <div class="chip" id="10"><span>$10</span></div>
-                    <div class="chip" id="25"><span>$25</span></div>
-                    <div class="chip" id="50"><span>$50</span></div>
+                    <div class="chip five" id="5"><span>$5</span></div>
+                    <div class="chip ten" id="10"><span>$10</span></div>
+                    <div class="chip twofive" id="25"><span>$25</span></div>
+                    <div class="chip fifty" id="50"><span>$50</span></div>
                 </div>
-                <div id="bet">
-                    <span>Bet: $</span><span id="bet-amount">0</span>
+                <div class="info" id="bank">
+                    <span id="bank-amount">0</span>
                 </div>
             </div>
             <div id="player-hand">
                 
             </div>
-            <div id="bank">Bank: $<span id="bank-amount"></span></div>
+            <div></div>
         </div>
     </main>
 </body>

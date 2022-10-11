@@ -27,7 +27,7 @@ let bet;
 // hit and stand buttons
 // message element
 const messageEl = document.getElementById('message');
-const betAmountEl = document.getElementById('bet-amount');
+// const betAmountEl = document.getElementById('bet-amount');
 const potEl = document.getElementById('pot');
 const potChipsEl = document.getElementById('pot-chips');
 const potAmountEl = document.getElementById('pot-amount');
@@ -150,6 +150,15 @@ function init() {
     player = new Player();
     dealer = new Dealer();
     PHASES.betting = true;
+    PHASES.playerAction = false;
+    PHASES.dealerAction = false;
+    player.handValue = 0;
+    dealer.handValue = 0;
+    player.bust = false;
+    dealer.bust = false;
+    player.blackJack = false;
+    dealer.blackJack = false;
+    dealer.handShowing = false;
     bet = 0;
     player.bank = 500;
     render();
@@ -266,6 +275,10 @@ function handleDraw() {
 } 
 
 function resetGame() {
+    if (player.bank === 0) {
+        init();
+        return;
+    }
     player.hand = [];
     dealer.hand = [];
     player.handValue = 0;
@@ -376,9 +389,7 @@ function renderPotChips () {
 }
 
 function renderInfo() {
-    bankAmountEl.innerText = player.bank;
-    betEl.style.visibility = PHASES.betting ? 'visible' : 'hidden';
-    potEl.style.visibility = PHASES.betting ? 'hidden' : 'visible';
-    betAmountEl.innerText = bet;
-    potAmountEl.innerText = pot;
+    bankAmountEl.innerText = `Bank: $${player.bank}`;
+    potAmountEl.innerText = PHASES.betting ? bet : pot;
+    potAmountEl.innerText = bet;
 }
