@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>♠BlackJack♠</title>
     <link rel="stylesheet" href="css/style.css">
+    <!-- load card library after so that its changes take effect -->
+    <link rel="stylesheet" href="css/card-library/css/cardstarter.min.css">
     <script defer src="js/main.js"></script>
 </head>
 <body>
@@ -17,26 +19,39 @@
             <h1 id="message">Hit or Stand</h1>
         </div>
         <div id="middle-board">
-            <div id="pot">Pot:</div>
+            <div id="pot">Pot: $<span id="pot-amount"></span></div>
+            <div id="pot-chips">
+                <button id="-5">$5</button>
+                <button id="-10">$10</button>
+                <button id="-25">$25</button>
+                <button id="-50">$50</button>
+            </div>
             <div id="deck-and-actions">
-                <button id="hit">Hit</button>
-                <button id="stand">Stand</button>
-                <button id="deal">Deal</button>
+                <!-- have classes match with phases for render function -->
+                <div class="card large west back"></div>
+                <div class="buttons">
+                    <button class="playerAction" id="hit">Hit</button>
+                    <button class="betting" id="deal">Deal</button>
+                    <button class="playerAction" id="stand">Stand</button>
+                </div>
             </div>
         </div>
         <div id="bottom-board">
-            <div id="chips">
-                <button id="5">$5</button>
-                <button id="10">$10</button>
-                <button id="25">$25</button>
-                <button id="50">$50</button>
+            <div id="left">
+                <div id="chips">
+                    <button id="5">$5</button>
+                    <button id="10">$10</button>
+                    <button id="25">$25</button>
+                    <button id="50">$50</button>
+                </div>
                 <div id="bet">
-                    <span>Bet: </span><span id="bet-amount">$0</span>
+                    <span>Bet: $</span><span id="bet-amount">0</span>
                 </div>
             </div>
             <div id="player-hand">
                 Player Hand:
             </div>
+            <div id="bank">Bank: $<span id="bank-amount"></span></div>
         </div>
     </main>
 </body>
