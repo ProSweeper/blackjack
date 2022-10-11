@@ -92,3 +92,7 @@ main {
     padding-top: 25%;
     font-size: 2vmin;
 }
+
+.chip:hover, .chip > span:hover {
+    cursor: pointer;
+}
