@@ -67,7 +67,6 @@ main {
 
 #left, #player-hand, #bank {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
 }

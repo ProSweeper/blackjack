@@ -99,6 +99,16 @@ class Player  {
         if (this.handValue > 21 ) this.bust = true;
         render();
     }
+
+    renderHand(hand, container, showing=true) {
+        container.innerHTML = '';
+        // build a string for the card to be passed into the inner HTML
+        let cardHTML = '';
+        hand.forEach(card => {
+            cardHTML += `<div class='card large ${card.face}'></div>`;
+        });
+        container.innerHTML = cardHTML;
+    }
 }
 
 class Dealer extends Player {
@@ -318,16 +328,9 @@ function renderControls() {
 }
 
 function renderHands () {
-    playerHandEl.innerText = 'Player Hand: ';
-    player.hand.forEach(card => {
-        playerHandEl.innerText += `${card.value} `;
-        playerHandEl.innerText += `_`;
-    });
-    dealerHandEl.innerText = 'Dealer Hand: ';
-    dealer.hand.forEach(card => {
-        dealerHandEl.innerText += `${card.value} `;
-        dealerHandEl.innerText += `_`;
-    });
+   dealer.renderHand(dealer.hand, dealerHandEl);
+   player.renderHand(player.hand, playerHandEl);
+
 }
 
 function renderMessage () {
