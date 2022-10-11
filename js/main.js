@@ -100,7 +100,7 @@ class Player  {
         render();
     }
 
-    renderHand(hand, container, showing=true) {
+    renderHand(hand, container, showing = true) {
         container.innerHTML = '';
         // build a string for the card to be passed into the inner HTML
         let cardHTML = '';
@@ -108,6 +108,11 @@ class Player  {
             cardHTML += `<div class='card large ${card.face}'></div>`;
         });
         container.innerHTML = cardHTML;
+
+        // if hand not showing then toggleclass on showing hand
+        if (!showing && this.hand.length > 1) {
+            container.firstChild.classList.toggle('back');
+        }
     }
 }
 
@@ -120,7 +125,7 @@ class Dealer extends Player {
     turn() {
         while (this.handValue < 18 && !this.bust) {
             this.hit();
-            setTimeout(function() {return}, 2000);
+            
             render();
         }
         if (dealer.bust){
@@ -190,6 +195,7 @@ function handlePlayerBust() {
 function handleStand() {
     PHASES.playerAction = false;
     PHASES.dealerAction = true;
+    dealer.handShowing = true;
     dealer.turn();
     render();
 }
@@ -249,6 +255,7 @@ function resetGame() {
     dealer.bust = false;
     player.blackJack = false;
     dealer.blackJack = false;
+    dealer.handShowing = false;
     resetPot();
     bet = 0;
     // just make sure everything is reset in phases
@@ -328,7 +335,7 @@ function renderControls() {
 }
 
 function renderHands () {
-   dealer.renderHand(dealer.hand, dealerHandEl);
+   dealer.renderHand(dealer.hand, dealerHandEl, dealer.handShowing);
    player.renderHand(player.hand, playerHandEl);
 
 }
