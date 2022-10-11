@@ -51,8 +51,9 @@ main {
 
 #deck-and-actions {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items:center;
+    flex-direction: column;
 }
 
 .buttons {
@@ -71,3 +72,23 @@ main {
     align-items: center;
 }
 
+.chip {
+    border-radius: 50%;
+    height: 8vmin;
+    width: 8vmin;
+    border: 0.5vmin dashed black;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.chip > span {
+    border-radius: 50%;
+    height: 90%;
+    width: 90%;
+    border: 0.3vmin dashed black;
+    text-align: center;
+    padding-top: 25%;
+    font-size: 2vmin;
+}
