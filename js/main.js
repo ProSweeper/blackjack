@@ -198,13 +198,6 @@ function handleHit() {
     render()
 }
 
-function handlePlayerBust() {
-    dealer.handShowing = true;
-    PHASES.playerAction = false;
-    messageEl.innerText = "BUST!! Please Play again"
-    setTimeout(resetGame, 3000);
-}
-
 function handleStand() {
     PHASES.playerAction = false;
     PHASES.dealerAction = true;
@@ -213,10 +206,17 @@ function handleStand() {
     render();
 }
 
+function handlePlayerBust() {
+    dealer.handShowing = true;
+    PHASES.playerAction = false;
+    messageEl.innerText = "BUST!! Please Play again"
+    setTimeout(resetGame, 3000);
+}
+
 function handlePlayerWin() {
     if (!dealer.bust) {
         messageEl.innerText = 'You Win!';
-        player.bank += pot * 2;
+        payPlayer();
         setTimeout(resetGame, 3000);
         return;
     }
@@ -292,7 +292,7 @@ function resetPot() {
 }
 
 function payPlayer() {
-    if (player.blackJack) pot += bet * 1.5;
+    if (player.blackJack) pot += (bet * 0.5);
     player.bank += pot;
 }
 
@@ -320,16 +320,16 @@ function getMainDeck() {
 
 function getShuffledDeck() {
     // we want to use a temp deck so we don't alter our maindeck ever
-    let tempDeck = mainDeck;
-    let shuffledDeck = [];
+    let tempDeck = [...mainDeck];
+    let shuffleDeck = [];
     // when length = 0 this will evaluate false
     while (tempDeck.length) {
         // get a random idx between (0, length-1)
         let idx = Math.floor(Math.random() * tempDeck.length);
         // splice returns an array so we want the first (only) element
-        shuffledDeck.push(tempDeck.splice(idx, 1)[0]);
+        shuffleDeck.push(tempDeck.splice(idx, 1)[0]);
     }
-    return shuffledDeck;
+    return shuffleDeck;
 }
 
 function render() {
