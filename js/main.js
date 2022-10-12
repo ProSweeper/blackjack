@@ -7,6 +7,8 @@ const PHASES = {
     playerAction: false,
     dealerAction: false
 };
+const CHIPBET = new Audio('../sounds/pokerchip.mp3');
+const WITHDRAW = new Audio('../sounds/withdraw.mp3');
 /*----state variables----*/
 let player;
 let dealer;
@@ -171,7 +173,8 @@ function handleRaise(evt) {
     // if the event target is the chip div then just get its id
     bet += evt.target.tagName === 'SPAN' ? parseInt(evt.target.parentElement.id) : parseInt(evt.target.id);
     if (bet > player.bank) bet = player.bank;
-    render()
+    CHIPBET.play();
+    render();
 }
 
 function handleWithdraw(evt) {
@@ -183,6 +186,7 @@ function handleWithdraw(evt) {
      // if the event target is the chip div then just get its id
      bet += evt.target.tagName === 'SPAN' ? parseInt(evt.target.parentElement.id) : parseInt(evt.target.id);
      if (bet < 0) bet = 0;
+     WITHDRAW.play();
      render()
 }
 
