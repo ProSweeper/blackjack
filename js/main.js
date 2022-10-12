@@ -7,7 +7,6 @@ const PHASES = {
     playerAction: false,
     dealerAction: false
 };
-
 /*----state variables----*/
 let player;
 let dealer;
@@ -29,7 +28,6 @@ const playerHandEl = document.getElementById('player-hand');
 const betEl = document.getElementById('bet');
 const playerChipsEl = document.getElementById('chips');
 const bankAmountEl = document.getElementById('bank-amount');
-
 /*----Event Listeners----*/
 dealbuttonEl.addEventListener('click', handleBet);
 playerChipsEl.addEventListener('click', handleRaise);
