@@ -7,8 +7,8 @@ const PHASES = {
     playerAction: false,
     dealerAction: false
 };
-const CHIPBET = new Audio('../sounds/pokerchip.mp3');
-const WITHDRAW = new Audio('../sounds/withdraw.mp3');
+const CHIPBET = new Audio('./sounds/pokerchip.mp3');
+const WITHDRAW = new Audio('./sounds/withdraw.mp3');
 /*----state variables----*/
 let player;
 let dealer;
