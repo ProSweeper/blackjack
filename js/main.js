@@ -7,14 +7,8 @@ const PHASES = {
     playerAction: false,
     dealerAction: false
 };
-const CHIPS = ['5', '10', '25', '50'];
-// card objects should hold value(int), face(string) values 
-
 
 /*----state variables----*/
-// the player will be an object housing an array of card objects, hand value, bank value,      
-// the dealer will be an object housing an array of card objects
-// the pot holding the bet money
 let player;
 let dealer;
 let mainDeck;
@@ -23,11 +17,7 @@ let pot;
 let playerWin;
 let bet;
 /*----Cached Elements----*/
-// chip buttons
-// hit and stand buttons
-// message element
 const messageEl = document.getElementById('message');
-// const betAmountEl = document.getElementById('bet-amount');
 const potEl = document.getElementById('pot');
 const potChipsEl = document.getElementById('pot-chips');
 const potAmountEl = document.getElementById('pot-amount');
@@ -41,11 +31,6 @@ const playerChipsEl = document.getElementById('chips');
 const bankAmountEl = document.getElementById('bank-amount');
 
 /*----Event Listeners----*/
-// click our chips to incriment the bet (delegated event)
-// manually enter bet in a text bar
-// make bet button
-// hit and stand buttons
-// deal cards button
 dealbuttonEl.addEventListener('click', handleBet);
 playerChipsEl.addEventListener('click', handleRaise);
 hitbuttonEl.addEventListener('click', handleHit);
@@ -54,16 +39,20 @@ potChipsEl.addEventListener('click', handleWithdraw);
 /*-------Functions-------*/
 class Player  {
     constructor() {
+        // array to house the card objects
         this.hand = [];
         this.bank = 0;
+        // sum of card objects in hand value's
         this.handValue = 0;
         this.blackJack = false;
         this.bust = false;
+        // for hand value function 
         this.aceCount = 0;
     }
 
     dealCards () {
-        // reset the bust and blackjack since this is the first 2 cards dealt
+        // reset the bust, value, and blackjack since this is the first 2 cards dealt
+        this.handValue = 0;
         this.blackJack = false;
         this.bust = false;
         this.hand.push(shuffledDeck.pop());
@@ -126,8 +115,6 @@ class Dealer extends Player {
     turn() {
         while (this.handValue < 18 && !this.bust) {
             this.hit();
-            
-            render();
         }
         if (dealer.bust){
             messageEl.innerText = "Dealer Bust! You Win!";
@@ -165,18 +152,14 @@ function init() {
 }
 
 function handleBet() {
+    // if no bet is entered then return
     if (!bet) return;
-    if (bet > player.bank) {
-        messageEl.innerText = "Please Enter a Valid Bet"
-        setTimeout(resetGame, 1500);
-        return;
-    }
     dealer.dealCards();
     player.dealCards();
     PHASES.betting = false;
     PHASES.playerAction = true;
-    pot = bet;
     player.bank -= bet;
+    pot = bet * 2;
     setTimeout(checkBlackJack, 1000);
     render();
 }
@@ -190,7 +173,6 @@ function handleRaise(evt) {
     // if the event target is the chip div then just get its id
     bet += evt.target.tagName === 'SPAN' ? parseInt(evt.target.parentElement.id) : parseInt(evt.target.id);
     if (bet > player.bank) bet = player.bank;
-
     render()
 }
 
@@ -215,6 +197,7 @@ function handleHit() {
 }
 
 function handlePlayerBust() {
+    dealer.handShowing = true;
     PHASES.playerAction = false;
     messageEl.innerText = "BUST!! Please Play again"
     setTimeout(resetGame, 3000);
@@ -235,7 +218,7 @@ function handlePlayerWin() {
         setTimeout(resetGame, 3000);
         return;
     }
-    player.bank += pot * 2;
+    payPlayer();
     resetGame();
 }
 
@@ -246,14 +229,14 @@ function handleDealerWin() {
 
 function checkBlackJack() {
     if (player.blackJack && !dealer.blackJack) {
-        player.bank += pot * 2.5;
+        // player blackjack
+        payPlayer();
         messageEl.innerText = "BlackJack!!";
         setTimeout(resetGame, 4000);
     } else if (dealer.blackJack && !player.blackJack) {
         // dealer blackjack
         messageEl.innerText = "Dealer BlackJack, Better Luck Next Time";
         setTimeout(resetGame, 4000);
-
     } else if (dealer.blackJack && player.blackJack) {
         // both blackjack
         handleDraw();
@@ -269,16 +252,21 @@ function findWinner() {
 }
 
 function handleDraw() {
-    player.bank += pot;
+    player.bank += pot/2 ;
     messageEl.innerText = 'Push!';
     setTimeout(resetGame, 4000);
 } 
 
 function resetGame() {
+    // if the player has no money in the bank restart the game
     if (player.bank === 0) {
-        init();
+        messageEl.innerText = "BANKRUPT";
+        setTimeout(init, 3000)
         return;
     }
+    // get a new shuffled deck
+    shuffledDeck = getShuffledDeck();
+    // reset the hands
     player.hand = [];
     dealer.hand = [];
     player.handValue = 0;
@@ -302,6 +290,7 @@ function resetPot() {
 }
 
 function payPlayer() {
+    if (player.blackJack) pot += bet * 1.5;
     player.bank += pot;
 }
 
