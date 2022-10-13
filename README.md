@@ -12,9 +12,9 @@ The game is considered lost when the player runs out of money to play with.
 
 # Screenshots
 
-![image](https://imgur.com/FfQxCPF)
+![Imgur](https://i.imgur.com/fqnEUi2.png)
 
-![image](https://imgur.com/fqnEUi2)
+![Imgur](https://i.imgur.com/FfQxCPF.png)
 
 # Technologies Used
 
