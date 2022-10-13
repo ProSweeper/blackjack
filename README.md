@@ -10,6 +10,12 @@ Winning a hand will pay the player 2X what they bet ($10 bet will yield a total 
 
 The game is considered lost when the player runs out of money to play with.
 
+# Screenshots
+
+![image](https://imgur.com/FfQxCPF)
+
+![image](https://imgur.com/fqnEUi2)
+
 # Technologies Used
 
 * JavaScript
