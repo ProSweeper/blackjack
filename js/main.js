@@ -237,6 +237,8 @@ function checkBlackJack() {
         setTimeout(resetGame, 4000);
     } else if (dealer.blackJack && !player.blackJack) {
         // dealer blackjack
+        dealer.handShowing = true;
+        render();
         messageEl.innerText = "Dealer BlackJack, Better Luck Next Time";
         setTimeout(resetGame, 4000);
     } else if (dealer.blackJack && player.blackJack) {
