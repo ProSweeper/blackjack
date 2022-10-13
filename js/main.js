@@ -356,13 +356,11 @@ function renderControls() {
             buttons.forEach(button => (button.style.visibility = 'hidden'))
         }
     }
-    // 
 }
 
 function renderHands () {
    dealer.renderHand(dealer.hand, dealerHandEl, dealer.handShowing);
    player.renderHand(player.hand, playerHandEl);
-
 }
 
 function renderMessage () {
@@ -371,14 +369,6 @@ function renderMessage () {
     } else if (PHASES.playerAction) {
         messageEl.innerText = 'Hit or Stand';
     }
-}
-
-function renderPlayerChips () {
-    return;
-}
-
-function renderPotChips () {
-    return;
 }
 
 function renderInfo() {

@@ -46,6 +46,7 @@ main {
     padding-top: 1%;
     line-height: 100%;
 }
+
 #pot-chips {
     display: flex;
     justify-content: space-around;
