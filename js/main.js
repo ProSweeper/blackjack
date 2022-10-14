@@ -98,7 +98,6 @@ class Player  {
             cardHTML += `<div class='card large ${card.face}'></div>`;
         });
         container.innerHTML = cardHTML;
-
         // if hand not showing then toggleclass on showing hand
         if (!showing && this.hand.length > 1) {
             container.firstChild.classList.toggle('back');
@@ -112,6 +111,7 @@ class Dealer extends Player {
         super();
         this.handShowing = false;
     }
+    
     turn() {
         while (this.handValue < 18 && !this.bust) {
             this.hit();
